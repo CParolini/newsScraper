@@ -45,7 +45,7 @@ db.once("open", function() {
 // GET request to scrape Bring a Trailer for new articles and store in database
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with request
-    request("http://news.google.com", function(error, response, html) {
+    request("http://time.com", function(error, response, html) {
         // Load the HTML into cheerio and save it to a variable
         var $ = cheerio.load(html);
 
@@ -55,7 +55,7 @@ app.get("/scrape", function(req, res) {
         // Select each instance of the HTML body that you want to scrape
         // NOTE: Cheerio selectors function similarly to jQuery's selectors,
         // but be sure to visit the package's npm page to see how it works
-        $('span.titletext').each(function(i, element) {
+        $('h2.home-icons-brief').each(function(i, element) {
             // Save an empty result object
             var result = {};
             result.title = $(element).text();
