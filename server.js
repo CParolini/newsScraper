@@ -45,7 +45,7 @@ db.once("open", function() {
 // GET request to scrape Bring a Trailer for new articles and store in database
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with request
-    request("https://news.google.com", function(error, response, html) {
+    request("http://news.google.com", function(error, response, html) {
         // Load the HTML into cheerio and save it to a variable
         var $ = cheerio.load(html);
 
