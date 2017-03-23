@@ -27,8 +27,8 @@ app.use(bodyParser.json({type: "application/vnd.api+json"}));
 app.use(express.static("public"));
 
 // Database configuration with mongoose
-//mongoose.connect("mongodb://localhost/news-scraper");
-mongoose.connect("mongodb://heroku_x988ghgc:vh0r8eq9kc6d7a7m1svft928ei@ds137760.mlab.com:37760/heroku_x988ghgc");
+mongoose.connect("mongodb://localhost/newsScraper");
+// mongoose.connect("mongodb://heroku_x988ghgc:vh0r8eq9kc6d7a7m1svft928ei@ds137760.mlab.com:37760/heroku_x988ghgc");
 
 var db = mongoose.connection;
 
@@ -45,7 +45,7 @@ db.once("open", function() {
 // GET request to scrape Bring a Trailer for new articles and store in database
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with request
-    request("http://time.com", function(error, response, html) {
+    request("https://news.google.com/", function(error, response, html) {
         // Load the HTML into cheerio and save it to a variable
         var $ = cheerio.load(html);
 
@@ -55,11 +55,11 @@ app.get("/scrape", function(req, res) {
         // Select each instance of the HTML body that you want to scrape
         // NOTE: Cheerio selectors function similarly to jQuery's selectors,
         // but be sure to visit the package's npm page to see how it works
-        $('h2.home-icons-brief').each(function(i, element) {
+        $('.esc-lead-article-title').each(function(i, element) {
             // Save an empty result object
             var result = {};
             result.title = $(element).text();
-            result.link = $(element).attr("href");
+            result.link = $(element).children().attr("href");;
 
             // Using our Article model, create a new entry
             var entry = new Article(result);
